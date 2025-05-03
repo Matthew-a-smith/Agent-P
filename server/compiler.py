@@ -1,0 +1,67 @@
+# compiler.py
+import os
+import subprocess
+import requests
+
+def download_files_from_github(repo_url, file_list, download_dir="."):
+    downloaded = []
+    for file in file_list:
+        url = f"{repo_url}/{file}"
+        local_path = os.path.join(download_dir, file)
+        try:
+            response = requests.get(url)
+            if response.status_code == 200:
+                with open(local_path, 'wb') as f:
+                    f.write(response.content)
+                downloaded.append(local_path)
+                print(f"[+] Downloaded {file}")
+            else:
+                print(f"[-] Failed to download {file}: {response.status_code}")
+                return None
+        except Exception as e:
+            print(f"[-] Error downloading {file}: {e}")
+            return None
+    return downloaded
+
+def compile_agent(ip, port, enable_all=False, enable_save_file=False, enable_daemon_file=False):
+    base_url = "https://raw.githubusercontent.com/Matthew-a-smith/Agent-P/main/build/"
+    c_files = ["main.c", "utils.c", "track.c", "finder.c", "process.c", "decompile.c", "proxy.c"]
+    header_files = [
+        "headers/binarys.h", "headers/finder.h", "headers/track.h", 
+        "headers/process_info.h", "headers/decompile.h", "headers/utils.h", "headers/proxy.h",
+        "headers/process_final_tracker.h", "headers/suspicious.h", 
+    ]
+
+    all_files = c_files + header_files
+
+    # Download all files
+    downloaded = download_files_from_github(base_url, all_files)
+    if not downloaded:
+        print("[-] File download failed.")
+        return
+
+    # Compile
+    compile_cmd = [
+        "gcc", *c_files,
+        f'-DPROXY_IP="{ip}"',
+        f'-DPROXY_PORT={port}',
+        "-o", "process_monitor", "-lssl", "-lcrypto"
+    ]
+    if enable_all:
+        compile_cmd.append("-DLOG_ENABLED")
+    if enable_save_file:
+        compile_cmd.append("-DSAVE_ENABLED")
+    if enable_daemon_file:
+        compile_cmd.append("-DDAEMON_ENABLED")
+
+    result = subprocess.run(compile_cmd, capture_output=True, text=True)
+
+    # Cleanup
+    for f in all_files:
+        os.remove(f)
+
+    if result.returncode == 0:
+        print("[+] Compilation successful.")
+    else:
+        print("[-] Compilation failed:")
+        print(result.stderr)
