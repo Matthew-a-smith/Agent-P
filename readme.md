@@ -2,8 +2,7 @@
 # Process Monitor
 # Process Injector
 
-agent-p-pictures/agent-p-main.png
-
+![Main Screenshot](agent-p-pictures/agent-p-main.png)
 A lightweight C-based tool for detecting and monitoring processes. I originally pivoted over three different times with this one project.
 
 My original idea was to create a C-based program that would recursively go through the `/proc` directory and monitor new process creation. I then wanted to run checksums against the known processes on the system and return all other processes that were not in the list of checksums.
@@ -87,8 +86,7 @@ This tool ensures no activity goes unnoticed, even if PID monitoring fails. Also
 
 Just set the listener address and compile with the flags you want. Depending on the compile-time flags, the listener behavior can change. Always set the listener after sending a command or file so it gets queued when a request is received to send back.
 
-agent-p-pictures/agent-listener.png
-
-agent-p-pictures/settings.png
+![Listener View](agent-p-pictures/agent-listener.png)
+![Settings View](agent-p-pictures/settings.png)
 
 
