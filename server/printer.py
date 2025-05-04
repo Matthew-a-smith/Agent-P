@@ -1,5 +1,4 @@
 from .constants import *
-from .file_utils import save_file_to_address_directory
 from globals import seen_bash_patterns
 
 # Colorization function
@@ -62,4 +61,3 @@ def print_process_processes(processes, addr):
     print(f"{BOLD}Source Checksum:{RESET} {colorize_value(processes['Source Checksum'], 'checksum')}")
     print(f"{BOLD}Saved File:{RESET} {processes['Saved File']}")
     print(f"{BOLD}Command to execute:{RESET} {processes['CMD']}")
-    save_file_to_address_directory(processes, addr)

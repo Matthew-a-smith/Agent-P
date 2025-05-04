@@ -35,22 +35,25 @@ def compile_agent(ip, port, enable_all=False, enable_save_file=False, enable_dae
         "headers/process_info.h", "headers/decompile.h", "headers/utils.h", "headers/proxy.h",
         "headers/process_final_tracker.h", "headers/suspicious.h",
     ]
+    external_files = ["externals/uthash.h"]
 
-    all_files = c_files + header_files
+    all_files = c_files + header_files + external_files
 
-    # Download all files (this will also create headers/ as needed)
+    # Download all source files
     downloaded = download_files_from_github(base_url, all_files)
     if not downloaded:
         print("[-] File download failed.")
         return
 
-    # Compile
+    # Compile with include paths for headers and externals
     compile_cmd = [
         "gcc", *c_files,
+        "-Iheaders", "-Iexternals",
         f'-DPROXY_IP="{ip}"',
         f'-DPROXY_PORT={port}',
         "-o", "process_monitor", "-lssl", "-lcrypto"
     ]
+
     if enable_all:
         compile_cmd.append("-DLOG_ENABLED")
     if enable_save_file:
@@ -60,13 +63,15 @@ def compile_agent(ip, port, enable_all=False, enable_save_file=False, enable_dae
 
     result = subprocess.run(compile_cmd, capture_output=True, text=True)
 
-    # Cleanup source files
+    # Cleanup source and header files
     for f in c_files:
         os.remove(f)
     if os.path.exists("headers"):
         shutil.rmtree("headers")
+    if os.path.exists("externals"):
+        shutil.rmtree("externals")
 
-    # Result
+    # Output result
     if result.returncode == 0:
         print("[+] Compilation successful.")
     else:
