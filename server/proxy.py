@@ -56,8 +56,56 @@ def handle_client(client_socket, client_address):
             if not data:
                 pass
                 break
+            # Check if this is a file transfer header
+            if b"[FILE_TRANSFER]" in data:
+                try:
+                    text_part = data.decode(errors="ignore")  # Only decode the header safely
+                    lines = text_part.splitlines()
 
-            lines = data.decode().splitlines()
+                    filename = None
+                    file_size = None
+                    header_length = 0
+
+                    for i, line in enumerate(lines):
+                        if line.startswith("FILENAME:"):
+                            filename = line.split(":", 1)[1].strip()
+                        elif line.startswith("SIZE:"):
+                            file_size = int(line.split(":", 1)[1].strip())
+                        if filename and file_size:
+                            header_length = len("\n".join(lines[:i+1])) + 1  # +1 for final newline
+                            break
+                        
+                    if not filename or not file_size:
+                        print("[-] Malformed [FILE_TRANSFER] header")
+                        continue
+                    
+                    # Calculate how many bytes remain (after header)
+                    raw_data = data[header_length:]
+                    while len(raw_data) < file_size:
+                        raw_data += client_socket.recv(4096)
+
+                    # Save the file
+                    import os
+                    os.makedirs("received_files", exist_ok=True)
+                    save_path = os.path.join("received_files", filename)
+                    with open(save_path, "wb") as f:
+                        f.write(raw_data[:file_size])
+
+                    print(f"[+] Received file saved to: {save_path}")
+
+                    # If more data came after the file, continue processing it
+                    remaining_data = raw_data[file_size:]
+                    if remaining_data:
+                        data = remaining_data
+                    else:
+                        continue  # Go back to top of recv loop
+                    
+                except Exception as e:
+                    print(f"[-] Error receiving file: {e}")
+                    continue
+                
+
+            lines = data.decode(errors="ignore").splitlines()
             block_type = None
             block_lines = []
 
