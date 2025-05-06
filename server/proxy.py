@@ -48,10 +48,10 @@ def handle_client(client_socket, client_address):
 
             else:
                 # No file to send — send 0
-                client_socket.sendall((0).to_bytes(4, 'big'))
+                client_socket.sendall((0).to_bytes(8, 'big'))
 
-            # === Now wait for incoming data ===
-            data = client_socket.recv(4096)
+                # === Now wait for incoming data ===
+                data = client_socket.recv(4096)
             if not data:
                 pass
                 break
