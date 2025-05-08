@@ -59,5 +59,4 @@ def print_process_processes(processes, addr):
     print(f"{BOLD}Checksum:{RESET} {colorize_value(processes['Checksum'], 'checksum')}")
     print(f"{BOLD}Source Path:{RESET} {processes['Source Path']}")
     print(f"{BOLD}Source Checksum:{RESET} {colorize_value(processes['Source Checksum'], 'checksum')}")
-    print(f"{BOLD}Saved File:{RESET} {processes['Saved File']}")
     print(f"{BOLD}Command to execute:{RESET} {processes['CMD']}")
