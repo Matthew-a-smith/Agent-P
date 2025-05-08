@@ -51,7 +51,7 @@ def compile_agent(ip, port, enable_all=False, enable_save_file=False, enable_dae
         "-Iheaders", "-Iexternals",
         f'-DPROXY_IP="{ip}"',
         f'-DPROXY_PORT={port}',
-        "-o", "process_monitor", "-lssl", "-lcrypto"
+        "-o", "agent_p", "-lssl", "-lcrypto"
     ]
 
     if enable_all:
