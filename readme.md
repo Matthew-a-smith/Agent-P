@@ -1,26 +1,23 @@
+## Agent P
+# Process Monitor
+
 A lightweight Linux-based tool for monitoring processes, transferring files, and executing commands remotely. Built with C and Python, designed for red team and research use.
 
 ## Usage
 
-    Set up the listener:
+# Set up the listener:
+    First, set the listener's IP and port using the --set lhost <ip> and --set lport <port> flags.
+    Then, start the listener using the --listener flag.
 
-        First, set the listener's IP and port using the --set lhost <ip> and --set lport <port> flags.
+# Compile the agent:
+    Compile the agent using the --compile flag, including any additional compiler flags (--log, --save, --daemon) to adjust behavior.
 
-        Then, start the listener using the --listener flag.
+# Send files or execute commands:
+    Use --send <local> <remote> to transfer files from your local system to the remote machine.
+    Use --run <cmd> <remote> to execute commands remotely.
 
-    Compile the agent:
-
-        Compile the agent using the --compile flag, including any additional compiler flags (--log, --save, --daemon) to adjust behavior.
-
-    Send files or execute commands:
-
-        Use --send <local> <remote> to transfer files from your local system to the remote machine.
-
-        Use --run <cmd> <remote> to execute commands remotely.
-
-    Listener behavior:
-
-        After sending files or commands, always ensure the listener is running to handle incoming requests. The listener will queue responses to send back once the request is received.
+# Listener behavior:
+       After sending files or commands, always ensure the listener is running to handle incoming requests. The listener will queue responses to send back once the request is received.
 
 ## Flags
  
