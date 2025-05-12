@@ -4,31 +4,9 @@ MONITOR_BINARY="/usr/local/bin/process_monitor"
 
 # List of file paths
 file_paths=(
-    "/var/run/vboxadd-service.sh"
-    "/snap/code/191/usr/share/code/resources/app/out/vs/workbench/contrib/terminal/common/scripts/shellIntegration-bash.sh"
-    "/home/matt/Agent-P/main.py"
-    "/snap/code/191/usr/share/code/resources/app/out/vs/base/node/cpuUsage.sh"
-    "/Snap/code/191/usr/share/code/resources/app/out/vs/base/node/cpuUsage.sh"
-    "/home/matt/Agent-P/cleaner.sh"
-    "/test/test.py"
 )
 
 file_names=(
-    "systemd-oomd"
-    "avahi-daemon"
-    "polkitd"
-    "kerneloops"
-    "rtkit-daemon"
-    "(sd-pam)"
-    "gnome-keyring-d"
-    "xdg-permission-"
-    "gnome-session-b"
-    "gnome-session-c"
-    "gvfsd-fuse"
-    "at-spi-bus-laun"
-    "gnome-shell-cal"
-    "evolution-sourc"
-    "gsd-a11y-settin"
 )
 
 # Function to check if monitor is running
