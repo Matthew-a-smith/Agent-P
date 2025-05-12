@@ -1,5 +1,6 @@
 from .constants import *
 from globals import seen_bash_patterns
+from .file_utils import save_filename_to_bash, save_file_to_bash
 
 # Colorization function
 def colorize_value(value, field_type):
@@ -55,8 +56,12 @@ def print_process_processes(processes, addr):
           f"{BOLD}Parent PID:{RESET} {colorize_value(processes['Parent PID'], 'pid')}  "
           f"{BOLD}Memory:{RESET} {colorize_value(processes['Memory'], 'memory')}  "
           f"{BOLD}CMD:{RESET} {colorize_value(processes['CMD'], 'address')}")
+    print(f"{BOLD}User:{RESET} {processes['User']}")
     print(f"{BOLD}Executable Path:{RESET} {processes['Executable Path']}")
     print(f"{BOLD}Checksum:{RESET} {colorize_value(processes['Checksum'], 'checksum')}")
     print(f"{BOLD}Source Path:{RESET} {processes['Source Path']}")
     print(f"{BOLD}Source Checksum:{RESET} {colorize_value(processes['Source Checksum'], 'checksum')}")
+    print(f"{BOLD}Saved File:{RESET} {processes['Saved File']}")
     print(f"{BOLD}Command to execute:{RESET} {processes['CMD']}")
+    save_filename_to_bash(processes['Source Path'])
+    save_file_to_bash(processes['Process Name'], processes['User'])
