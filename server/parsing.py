@@ -6,6 +6,7 @@ def parse_process_block(lines):
         "Start Time": "", "PID": "", "Process Name": "", "Parent PID": "",
         "Memory": "", "CMD": "", "Executable Path": "", "Checksum": "",
         "Source Path": "", "Source Checksum": "", "Saved File": "",
+        "User": "",
     }
     for line in lines:
         match = re.match(r"(\w[\w\s]+):\s+(.*)", line)
